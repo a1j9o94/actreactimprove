@@ -1,13 +1,14 @@
 import httpx
 import re
 import openai
+import os
 from dotenv import load_dotenv
 
 # This code is Apache 2 licensed:
 # https://www.apache.org/licenses/LICENSE-2.0
 
 load_dotenv()
-openai.api_key = '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'
+openai.api_key = os.environ.get("OPEN-AI-API-KEY")
 
 
 class ChatBot:

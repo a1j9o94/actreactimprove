@@ -28,8 +28,8 @@ class ChatBot:
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo", messages=self.messages)
         # Uncomment this to print out token usage each time, e.g.
-        {"completion_tokens": 86, "prompt_tokens": 26, "total_tokens": 112}
-        print(completion.usage)
+        # {"completion_tokens": 86, "prompt_tokens": 26, "total_tokens": 112}
+        # print(completion.usage)
         return completion.choices[0].message.content
 
     def evaluate(self, question, answer):
@@ -42,11 +42,13 @@ class ChatBot:
 
 
 prompt = """
-You run in a loop of Thought, Action, PAUSE, Observation.
+You run in a loop of Thought, Action, PAUSE, Observation, Evaluation, Improvement.
 At the end of the loop you output an Answer
 Use Thought to describe your thoughts about the question you have been asked.
 Use Action to run one of the actions available to you - then return PAUSE.
 Observation will be the result of running those actions.
+Evaluation will be a step-by-step breakdown of what could be improved.
+Improvement will be a new action and its Python implementation. The actions should be something you expect to have to use again and should be generally useful
 
 Your original available actions are:
 
@@ -88,14 +90,14 @@ You then output:
 
 Answer: The capital of France is Paris.
 
-Improvement example:
+Evaluation example:
 Based on the evaluation, it's suggested to include the population of the capital city.
 It could be improved by
 - Suggesting things to do in the city
 - Looking up average hotel prices in the city
 - Pulling up recent news stories about the city
 
-Suggested action: news: Paris
+Suggested improvement: news: Paris
 Python code:
 def news(subject):
     return httpx.get("https://example.news.api.com/", params={"subject": subject}).json()["story1"]
@@ -191,4 +193,4 @@ known_actions = {
 }
 
 if __name__ == '__main__':
-    query("Who was the 17th president of the united staes?")
+    query("What is the sum of the population of the 3 largest cities in the US during the term of our 17th president?")
