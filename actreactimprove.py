@@ -176,9 +176,9 @@ def calculate(what):
 
 def world_population(city):
     api_url = 'https://api.api-ninjas.com/v1/city?name={}'.format(city)
-    response = requests.get(
+    response = httpx.get(
         api_url, headers={'X-Api-Key': os.environ.get("NINJA-API-KEY")})
-    if response.status_code == requests.codes.ok:
+    if response.status_code == httpx.codes.ok:
         print(response.text)
         return response.json()['population']
 
