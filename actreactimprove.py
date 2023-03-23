@@ -108,7 +108,7 @@ def news(subject):
 action_re = re.compile('^Action: (\w+): (.*)$')
 
 
-def query(question, max_turns=5):
+def query(question, max_turns=15):
     i = 0
     bot = ChatBot(prompt)
     next_prompt = question
@@ -177,13 +177,16 @@ def calculate(what):
     return eval(what)
 
 def world_population(city):
+    if city.endswith("City"):
+        city = city[:-len("City")]
     api_url = 'https://api.api-ninjas.com/v1/city?name={}'.format(city)
     response = httpx.get(
         api_url, headers={'X-Api-Key': os.environ.get("NINJA-API-KEY")})
     if response.status_code == httpx.codes.ok:
         print(response.text)
-        return response.json()['population']
-
+        population = response.json()['population']
+        if not(population is None):
+            return population
 
 known_actions = {
     "wikipedia": wikipedia,
