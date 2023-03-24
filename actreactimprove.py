@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 # https://www.apache.org/licenses/LICENSE-2.0
 
 load_dotenv()
-openai.api_key = os.environ.get("OPEN-AI-API-KEY")
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
 class ChatBot:
@@ -181,8 +181,9 @@ def world_population(city):
         city = city[:-len("City")]
     api_url = 'https://api.api-ninjas.com/v1/city?name={}'.format(city)
     response = httpx.get(
-        api_url, headers={'X-Api-Key': os.environ.get("NINJA-API-KEY")})
-    if response.status_code == httpx.codes.ok:
+        api_url, headers={'X-Api-Key': os.environ.get("NINJA_API_KEY")})
+    if response.status_code == httpx.codes.ok and not(len(response.text) == 0):
+        print(city)
         print(response.text)
         population = response.json()['population']
         if not(population is None):
